@@ -5,23 +5,55 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Page Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
-<body>
-    <p>Hello chat app</p>
-
-    <div class="chat">
-      <div class="messages" id="messages">
+<body class="chat">
+    <div class="chat__sidebar">
+      <h3>People</h3>
+      <div id="users"></div>
+    </div>
+    <div class="chat__main">
+      <div class="chat__messages" id="messages">
 
       </div>
-      <div>
+      <div class="chat__footer">
         <form id="messages-form">
-          <input type="text" placeholder="Type a message" name="message"/>
+          <input type="text" placeholder="Type a message" name="message" autofocus autocomplete="off"/>
           <button type="submit">Send</button>
         </form>
+        <button id="send-location">Send location</button>
       </div>
     </div>
 
+    <script id="message-template" type="text/template">
+      <div class="message">
+        <div class="message__title">
+          <h4>{{ from }}</h4>
+          <span>{{ date }}</span>
+        </div>
+        <div class="message__body">
+          <p>{{ text }}</p>
+        </div>
+      </div>
+    </script>
+
+    <script id="location-message-template" type="text/template">
+      <div class="message">
+        <div class="message__title">
+          <h4>{{ from }}</h4>
+          <span>{{ date }}</span>
+        </div>
+        <div class="message__body">
+          <p>
+            <a href="{{url}}" target="_blank">My location</a>
+          </p>
+        </div>
+      </div>
+    </script>
+
     <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/libs/moment.js"></script>
+    <script src="/js/libs/mustache.js"></script>
     <script src="/js/index.js"></script>
 </body>
 </html>
