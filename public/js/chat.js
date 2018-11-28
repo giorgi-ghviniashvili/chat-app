@@ -18,11 +18,24 @@ function scrollToBottom () {
 }
 
 socket.on('connect', function () {
-    console.log('Connected to server');
+    var params = deparam();
+
+    socket.emit('join', params, function (error) {
+      if (error) {
+        alert(error);
+        window.location.href = '/';
+      } else {
+        console.log('No error');
+      }
+    });
 })
 
 socket.on('disconnect', function () {
-    console.log('Connection is down');
+
+})
+
+socket.on('updateUsersList', function (users) {
+  displayUsers(users)
 })
 
 socket.on('newMessage', function (message) {
@@ -61,6 +74,21 @@ function addLocationMessage(message) {
   scrollToBottom()
 }
 
+function displayUsers (users) {
+  var usersDom = document.getElementById('users');
+  usersDom.innerHTML = "";
+
+  var ul = document.createElement('ul');
+
+  users.forEach(user => {
+    var li = document.createElement('li')
+    li.innerText = user
+    ul.appendChild(li)
+  })
+
+  usersDom.appendChild(ul)
+}
+
 document.getElementById('messages-form')
   .addEventListener('submit', function (e) {
       e.preventDefault();
@@ -71,7 +99,6 @@ document.getElementById('messages-form')
       }
 
       socket.emit('createMessage', {
-          from: 'User',
           text: messageInput.value
       }, function (message) {
         messageInput.value = '';
