@@ -14,4 +14,18 @@ const generateLocationMessage = (from, latitude, longitude) => {
   }
 }
 
-module.exports = {generateMessage, generateLocationMessage}
+const generateTypingMessage = (usersNames) => {
+  var typeMessage = null;
+
+  if (usersNames.length) {
+    if (usersNames.length == 1) {
+      typeMessage = `${usersNames[0]} types...`
+    } else {
+      typeMessage = `${usersNames.join(', ')} are typing...`
+    }
+  }
+
+  return typeMessage
+}
+
+module.exports = {generateMessage, generateLocationMessage, generateTypingMessage}

@@ -18,11 +18,12 @@
       </div>
       <div class="chat__footer">
         <form id="messages-form">
-          <input type="text" placeholder="Type a message" name="message" autofocus autocomplete="off"/>
+          <input type="text" placeholder="Type a message" name="message" autofocus autocomplete="off" id="message-input"/>
           <button type="submit">Send</button>
         </form>
         <button id="send-location">Send location</button>
       </div>
+      <div id="typing" class="typing-indicator hidden"></div>
     </div>
 
     <script id="message-template" type="text/template">

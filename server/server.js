@@ -3,7 +3,7 @@ const path = require('path')
 const http = require('http')
 const socketIO = require('socket.io')
 
-const {generateMessage, generateLocationMessage} = require('./utils/utils')
+const {generateMessage, generateLocationMessage, generateTypingMessage} = require('./utils/utils')
 const {isRealString} = require('./utils/validations.js')
 const {Users} = require('./utils/users')
 
@@ -37,11 +37,22 @@ io.on('connection', (socket) => {
       callback();
     })
 
+    socket.on('typing', (isTyping) => {
+      var user = users.getUser(socket.id);
+
+      if (user) {
+        user.types = isTyping
+        socket.broadcast.to(user.room).emit('typing', generateTypingMessage(users.getWhoTypes()))
+      }
+    })
+
     socket.on('createMessage', (message, callback) => {
         var user = users.getUser(socket.id);
 
         if (user && isRealString(message.text)) {
           io.to(user.room).emit('newMessage', generateMessage(user.name, message.text));
+          user.types = false;
+          socket.broadcast.to(user.room).emit('typing', generateTypingMessage(users.getWhoTypes()))
         }
 
         callback(message)

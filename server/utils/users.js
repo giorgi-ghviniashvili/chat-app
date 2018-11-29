@@ -3,7 +3,7 @@ class Users {
     this.users = []
   }
   addUser (id, name, room) {
-    var user = {id, name, room};
+    var user = {id, name, room, types: false};
     this.users.push(user);
     return user;
   }
@@ -22,6 +22,11 @@ class Users {
     return this.users
       .filter(x => x.room === room)
       .map(x => x.name);
+  }
+  getWhoTypes () {
+    return this.users
+      .filter(x => x.types)
+      .map(x => x.name)
   }
 }
 

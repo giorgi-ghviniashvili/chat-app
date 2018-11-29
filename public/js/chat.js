@@ -38,6 +38,14 @@ socket.on('updateUsersList', function (users) {
   displayUsers(users)
 })
 
+socket.on('typing', function (typeMessage) {
+  var typing = document.getElementById('typing');
+
+  typing.innerHTML = typeMessage;
+
+  typing.classList.remove('hidden')
+})
+
 socket.on('newMessage', function (message) {
     var formattedDate = new moment(message.createdAt).format('h:mm a')
     addMessage({
@@ -103,6 +111,21 @@ document.getElementById('messages-form')
       }, function (message) {
         messageInput.value = '';
       })
+  })
+
+var timer = null;
+document.getElementById('message-input')
+  .addEventListener('keydown', function () {
+    clearTimeout(timer)
+    socket.emit('typing', true);
+    timer = setTimeout(() => {
+      socket.emit('typing', false)
+    }, 1000)
+  })
+
+document.getElementById('message-input')
+  .addEventListener('focusout', function () {
+    socket.emit('typing', false)
   })
 
 locationButton = document.getElementById('send-location')
